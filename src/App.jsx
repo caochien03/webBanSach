@@ -7,6 +7,7 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import { Outlet } from "react-router-dom";
 import Home from "./components/home";
+import RegisterPage from "./pages/register";
 
 const Layout = () => {
     return (
@@ -41,6 +42,10 @@ export default function App() {
         {
             path: "/login",
             element: <LoginPage />,
+        },
+        {
+            path: "/register",
+            element: <RegisterPage />,
         },
     ]);
 

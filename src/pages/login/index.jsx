@@ -1,11 +1,35 @@
 import { Button, Divider, Form, Input, message, notification } from "antd";
+import { useState } from "react";
+import { callLogin } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
     };
-    const onFinish = (values) => {
-        console.log("success:", values);
+    const onFinish = async (values) => {
+        const { username, password } = values;
+        setIsLoading(true);
+        const res = await callLogin(username, password);
+        setIsLoading(false);
+
+        if (res && res.data) {
+            localStorage.setItem("access_token", res.data.access_token);
+            message.success("Đăng nhập người dùng thành công!");
+            navigate("/");
+        } else {
+            notification.error({
+                message: "Có lỗi xảy ra",
+                description:
+                    res.message && Array.isArray(res.message) > 0
+                        ? res.message[0]
+                        : res.message,
+                duration: 5,
+            });
+        }
+        console.log("success:", res);
     };
     return (
         <>
@@ -32,7 +56,7 @@ const LoginPage = () => {
             >
                 <Form.Item
                     label="Email"
-                    name="email"
+                    name="username"
                     rules={[
                         {
                             required: true,
@@ -62,7 +86,11 @@ const LoginPage = () => {
                         span: 16,
                     }}
                 >
-                    <Button type="primary" htmlType="submit" loading={false}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        loading={isLoading}
+                    >
                         Login
                     </Button>
                 </Form.Item>

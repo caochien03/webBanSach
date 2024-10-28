@@ -2,10 +2,13 @@ import { Button, Divider, Form, Input, message, notification } from "antd";
 import { useState } from "react";
 import { callLogin } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { doLoginAction } from "../../redux/account/accountSlice";
 
 const LoginPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
     };
@@ -17,6 +20,7 @@ const LoginPage = () => {
 
         if (res && res.data) {
             localStorage.setItem("access_token", res.data.access_token);
+            dispatch(doLoginAction(res.data.user));
             message.success("Đăng nhập người dùng thành công!");
             navigate("/");
         } else {

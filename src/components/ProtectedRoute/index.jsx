@@ -1,5 +1,18 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import NotPermited from "./NotPermited";
+
+const RoleBaseRoute = (props) => {
+    const isAdminRoutes = window.location.pathname.startsWith("/admin");
+    const user = useSelector((state) => state.account.user);
+    const userRole = user.role;
+
+    if (isAdminRoutes && userRole === "ADMIN") {
+        return <>{props.children}</>;
+    } else {
+        return <NotPermited />;
+    }
+};
 
 const ProtectedRoute = (props) => {
     const isAuthenticated = useSelector(
@@ -9,7 +22,7 @@ const ProtectedRoute = (props) => {
     return (
         <>
             {isAuthenticated === true ? (
-                <>{props.children}</>
+                <RoleBaseRoute>{props.children}</RoleBaseRoute>
             ) : (
                 <Navigate to="/login" replace />
             )}

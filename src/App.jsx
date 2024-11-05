@@ -27,6 +27,17 @@ const Layout = () => {
         </>
     );
 };
+const LayoutAdmin = () => {
+    return (
+        <>
+            <div>
+                <Header />
+                <Outlet />
+                <Footer />
+            </div>
+        </>
+    );
+};
 
 export default function App() {
     const dispatch = useDispatch();
@@ -35,7 +46,12 @@ export default function App() {
     );
 
     const getAccount = async () => {
-        if (window.location.pathname === "/login") return;
+        if (
+            window.location.pathname === "/login" ||
+            window.location.pathname === "/register" ||
+            window.location.pathname === "/"
+        )
+            return;
 
         const res = await callFetchAccount();
 
@@ -52,7 +68,7 @@ export default function App() {
             children: [
                 { index: true, element: <Home /> },
                 {
-                    path: "contact",
+                    path: "users",
                     element: <ContactPage />,
                 },
                 {
@@ -63,7 +79,7 @@ export default function App() {
         },
         {
             path: "/admin",
-            element: <Layout />,
+            element: <LayoutAdmin />,
             errorElement: <NotFound />,
             children: [
                 {
@@ -98,7 +114,9 @@ export default function App() {
     return (
         <>
             {isAuthenticated === true ||
-            window.location.pathname === "/login" ? (
+            window.location.pathname === "/login" ||
+            window.location.pathname === "/register" ||
+            window.location.pathname === "/" ? (
                 <RouterProvider router={router} />
             ) : (
                 <Loading />

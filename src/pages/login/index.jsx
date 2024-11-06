@@ -33,7 +33,6 @@ const LoginPage = () => {
                 duration: 5,
             });
         }
-        console.log("success:", res);
     };
     return (
         <>

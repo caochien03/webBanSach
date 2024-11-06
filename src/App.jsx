@@ -15,19 +15,10 @@ import NotFound from "./components/NotFound";
 import AdminPage from "./pages/admin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/Loading";
+import LayoutAdmin from "./components/admin/AdminLayout";
+import "./styles/reset.scss";
 
 const Layout = () => {
-    return (
-        <>
-            <div>
-                <Header />
-                <Outlet />
-                <Footer />
-            </div>
-        </>
-    );
-};
-const LayoutAdmin = () => {
     return (
         <>
             <div>
@@ -48,8 +39,7 @@ export default function App() {
     const getAccount = async () => {
         if (
             window.location.pathname === "/login" ||
-            window.location.pathname === "/register" ||
-            window.location.pathname === "/"
+            window.location.pathname === "/register"
         )
             return;
 
